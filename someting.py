@@ -1,9 +1,9 @@
 import sys
 import random
 import requests
-p = 0
+
 print("Welcome To The Pokedex!")
-while p == 0:  
+while True:  
     choices = input("What would you like to do today?\n 1.) Choose A Random Pokemon \n 2.) Look Up A Pokemon \n 3.) Exit:\n")
     if choices == "1":
         random_id = random.randint(1, 1025)
@@ -19,10 +19,11 @@ while p == 0:
         print(f"PNG Sprite URL: {pokemon_png}")
 
     elif choices == "2":
+
         try:
-            look_up_a_pokemon = input("What pokemon would you like to look up?\n")
-            picked_pokemon = f'https://pokeapi.co/api/v2/pokemon/{look_up_a_pokemon}'
-            data3 = requests.get(picked_pokemon).json()
+            look_up_a_pokemon = input("What pokemon would you like to look up?\n").lower()
+            picked_pokemon = f'https://pokeapi.co/api/v2/pokemon/{look_up_a_pokemon}' or f'https://pokeapi.co/api/v2/pokemon/{new_input}'
+            data3 = requests.get(url).json()["results"]
             picked_pokemon_png = data3["sprites"]["front_default"]
             picked_name = data3['name'].capitalize()
             sprite_url = data3['sprites']['front_default']
@@ -44,16 +45,17 @@ while p == 0:
             else:
                 print("That is not a valid choice.")
         except:
-            print("That is not a valid pokemon")
+                url = "https://pokeapi.co/api/v2/pokemon?limit=2000"
+                all_pokemon = requests.get(url).json()["results"]
+                print("did you mean any of these?")
+                for poke in all_pokemon:
+                    if poke["name"].startswith(look_up_a_pokemon):
+                        print(poke["name"].capitalize())
+                new_input = input("If it is please type that here:\n").lower()
     elif choices == "3":
         sys.exit(0)
     else:
         print("Sorry! That is not a choice!")
-
-
-
-
-
 
 
 
